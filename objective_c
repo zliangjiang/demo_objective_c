@@ -1,0 +1,61 @@
+ 一、安装Ojbective-C 开发环境
+
+       # sudo apt-get install gnustep*
+
+       这样安装了GNUSTEP所有的库和工具，其实单编译Objective-c的话，不用安装那么多库和工具，只是这样比较方便。
+
+       二、编写一个实例
+
+       使用 gedit 或者 vim 编辑以下内容，保存为 hello.m。
+
+       #import <Foundation/Foundation.h>
+       int main(int argc, const char * argv[]) {
+           NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+           NSLog(@"Hello world\n");
+           [pool drain];
+           return 0;
+       }
+
+       三、编译执行
+
+       1. 在终端中进入到 hello.m 目录中，使用如下命令编译程序：
+
+       # gcc hello.m `gnustep-config --objc-flags` -lgnustep-base -o hello
+
+       2. 执行完成后，在当前目录下生成了两个文件，一个是hello.d，另一个是hello（可执行文件）。
+
+       运行可执行文件： $ ./hello
+
+       3. 运行结果：2012-02-22 17:59:46.448 hello[2118] Hello world 
+
+
+
+
+
+ . /usr/share/GNUstep/Makefiles/GNUstep.sh
+
+
+
+
+1. 编辑环境变量，vi $HOME/.bashrc 在最后添加以下内容：
+
+              GNUSTEP_MAKEFILES=/usr/share/GNUstep/Makefiles
+              export GNUSTEP_MAKEFILES
+              source /usr/share/GNUstep/Makefiles/GNUstep.sh
+备注：$HOME的意思是你的home目录，一般是/home/xxx/，xxx是你的登陆用户名。如果你用gnome图形界面的话，打开文件浏览器，按一下ctrl+h，就会显示隐藏的文件，如果你用终端的话，执行 ls -a，这样就能找到.bashrc文件了。
+
+2.到你自己写Objective-c源代码文件的目录下，建立一个名称为"GNUmakefile'的文件（必须是这个文件名，我试过了，其他不行），然后添加以下内容：
+
+       include $(GNUSTEP_MAKEFILES)/common.make
+       TOOL_NAME=[目标文件名]
+       [目标文件名]_OBJC_FILES=[源文件名]        
+       include $(GNUSTEP_MAKEFILES)/tool.make
+
+       这里的“目标文件名”为：hello（可以任取，最后编译完成后生成的可执行文件则为该名字）
+       源文件名，则你所保存的源程序名称，这里为：hello.m
+
+       3. 完了之后，就可以在源代码目录下make了，然后会在该目录下生成一个obj的目录，cd进去就能找到生成的可执行文件了，执行之！
+
+       # make
+       # ./hello
+       运行可执行文件： $ ./hello
